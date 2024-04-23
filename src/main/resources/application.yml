@@ -1,0 +1,33 @@
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    # p6spy ?? ??
+    p6spy:
+      enable-logging: true
+      multiline: true
+      logging: slf4j
+    #    url: jdbc:h2:tcp://localhost/~/jpashop
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      #      ddl-auto: create
+      ddl-auto: create
+    #      none : db? ???? ?? ?? ???? ??.
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100 #??? ?? // ??? ?? ??
+        # 100 ? ??? ??? ??? ???? ?.
+#    open-in-view: false
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
