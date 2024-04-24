@@ -1,19 +1,17 @@
 package com.example.itemservice.item.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class ItemDto {
 
     private Long id;
     private String itemName;
     private Integer quantity;
-    private Integer price;
+    private Integer price = 0;
 
 }

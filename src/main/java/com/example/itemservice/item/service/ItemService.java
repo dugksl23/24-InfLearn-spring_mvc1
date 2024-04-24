@@ -19,9 +19,11 @@ public class ItemService {
     private final ItemJpaRepository itemJpaRepository;
     private final ItemRepository itemRepository;
 
-    public Item save(Item item) {
+    public void save(ItemDto itemDto) {
 //        return itemRepository.save(item);
-        return itemRepository.save(item);
+        Item item = Item.create(itemDto);
+        Item save = itemRepository.save(item);
+        itemDto.setId(save.getId());
     }
 
     public List<Item> findAll() {

@@ -25,33 +25,42 @@ public class ItemBasicController {
         List<Item> all = itemService.findAll();
         log.info("itemList size : {}", all.size());
         model.addAttribute("itemList", all);
-        return "/item/itemList";
+        return "item/itemList";
 
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        return "/item/registerItem";
+        model.addAttribute("registerItemForm", new ItemDto());
+        return "item/registerItem";
+    }
+
+    @PostMapping("/register")
+    public String registerForm(@ModelAttribute("registerItemForm") ItemDto itemDto) {
+        itemService.save(itemDto);
+        return "redirect:/basic/item/itemDetail/" + itemDto.getId();
     }
 
     @GetMapping("/itemDetail/{id}")
     public String itemDetail(Model model, @PathVariable("id") Long id) {
         Item itemDetail = itemService.findById(id);
         model.addAttribute("item", itemDetail);
-        return "/item/item";
+        return "item/item";
     }
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable("id") Long id, Model model) {
+        log.info("update id : {}", id);
         Item item = itemService.findById(id);
-        model.addAttribute("item", item);
-        return "/item/updateItem";
+        model.addAttribute("updateItemForm", item);
+        return "item/updateItem";
     }
 
     @PostMapping("/update/{id}")
     public String updatedItem(@PathVariable("id") Long id, @ModelAttribute("updateItemForm") ItemDto itemDto) {
+        log.info("updated id : {}", itemDto.getId());
         Item item1 = itemService.updateItem(itemDto);
-        return "redirect:/basic/item/itemDetail" + id;
+        return "redirect:/basic/item/itemDetail/{id}";
     }
 
 
@@ -64,17 +73,17 @@ public class ItemBasicController {
     }
 
     private void dbInit() {
-        Item jpa2 = createItem(111, 20, "JPA2");
-        Item jpa3 = createItem(111, 30, "JPA3");
+        ItemDto jpa2 = createItem(111, 20, "JPA2");
+        ItemDto jpa3 = createItem(111, 30, "JPA3");
 
         itemService.save(jpa2);
         itemService.save(jpa3);
     }
 
-    private Item createItem(int price, int quantity, String itemName) {
+    private ItemDto createItem(int price, int quantity, String itemName) {
         ItemDto dto = ItemDto.builder().price(price).quantity(quantity).itemName(itemName).build();
 
-        return Item.create(dto);
+        return dto;
     }
 
 }
