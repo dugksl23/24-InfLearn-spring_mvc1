@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ItemBasicController {
     @GetMapping("/itemList")
     public String itemList(Model model) {
         List<Item> all = itemService.findAll();
+        log.info("itemList size : {}", all.size());
         model.addAttribute("itemList", all);
         return "/item/itemList";
 
@@ -32,6 +34,13 @@ public class ItemBasicController {
     @GetMapping("/register")
     public String register(Model model) {
         return "/item/registerItem";
+    }
+
+    @GetMapping("/itemDetail/{id}")
+    public String itemDetail(Model model, @PathVariable("id") Long id) {
+        Item itemDetail = itemService.findById(id);
+        model.addAttribute("item", itemDetail);
+        return "/item/item";
     }
 
 
