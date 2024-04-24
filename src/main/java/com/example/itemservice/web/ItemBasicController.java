@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,6 +39,19 @@ public class ItemBasicController {
         Item itemDetail = itemService.findById(id);
         model.addAttribute("item", itemDetail);
         return "/item/item";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id, Model model) {
+        Item item = itemService.findById(id);
+        model.addAttribute("item", item);
+        return "/item/updateItem";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updatedItem(@PathVariable("id") Long id, @ModelAttribute("updateItemForm") ItemDto itemDto) {
+        Item item1 = itemService.updateItem(itemDto);
+        return "redirect:/basic/item/itemDetail" + id;
     }
 
 

@@ -2,6 +2,7 @@ package com.example.itemservice.item.service;
 
 
 import com.example.itemservice.item.domain.Item;
+import com.example.itemservice.item.dto.ItemDto;
 import com.example.itemservice.item.repository.ItemJpaRepository;
 import com.example.itemservice.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +33,10 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
+
+    public Item updateItem(ItemDto item) {
+        itemRepository.update(item);
+        Item byId = itemRepository.findById(item.getId());
+        return byId;
+    }
 }
