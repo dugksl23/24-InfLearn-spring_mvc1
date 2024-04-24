@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -36,16 +37,20 @@ public class ItemBasicController {
     }
 
     @PostMapping("/register")
-    public String registerForm(@ModelAttribute("registerItemForm") ItemDto itemDto) {
+    public String registerForm(@ModelAttribute("registerItemForm") ItemDto itemDto, RedirectAttributes redirectAttributes) {
         itemService.save(itemDto);
-        return "redirect:/basic/item/itemDetail/" + itemDto.getId();
+        redirectAttributes.addAttribute("itemId", itemDto.getId());
+        redirectAttributes.addAttribute("status", true);
+        redirectAttributes.addAttribute("message", "Item registered successfully");
+        //queryParameter 형식으로 반환된다.
+        return "redirect:/basic/item/itemDetail/{itemId}";
     }
 
     @GetMapping("/itemDetail/{id}")
     public String itemDetail(Model model, @PathVariable("id") Long id) {
         Item itemDetail = itemService.findById(id);
         model.addAttribute("item", itemDetail);
-        return "item/item";
+        return "/item/item";
     }
 
     @GetMapping("/update/{id}")
